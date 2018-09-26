@@ -1,0 +1,7 @@
+.venv/
+.tmp/
+
+# libbi logs
+.KalmanFilter/
+
+filtered.nc
