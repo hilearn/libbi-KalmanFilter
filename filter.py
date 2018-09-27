@@ -17,7 +17,7 @@ if __name__ == '__main__':
     logreturns = rootgrp.variables['y'][:]
 
     logreturns = logreturns[:100]
-    plt.plot(logreturns)
+    plt.plot(logreturns, label='raw data')
 
     kalman = KalmanFilter(1, 1)
     kalman.x = np.zeros((kalman.dim_x, 1))
@@ -41,7 +41,7 @@ if __name__ == '__main__':
         covs.append(kalman.P[0, 0])
 
     k_stds = np.sqrt(covs)
-    plt.plot(filtered, color='red')
+    plt.plot(filtered, color='red', label='theoretical result')
     plt.plot(filtered + k_stds, color='red', alpha=0.3)
     plt.plot(filtered - k_stds, color='red', alpha=0.3)
 
@@ -52,11 +52,12 @@ if __name__ == '__main__':
     libbi_filtered_grp = Dataset('filtered.nc', 'r')
     libbi_logreturns = libbi_filtered_grp.variables['x'][:]
 
-    plt.plot(libbi_logreturns.mean(axis=1), 'green')
+    plt.plot(libbi_logreturns.mean(axis=1), 'green', label='libbi result')
     std = libbi_logreturns.std(axis=1)
     plt.plot(libbi_logreturns.mean(axis=1) + std, 'green', alpha=0.3)
     plt.plot(libbi_logreturns.mean(axis=1) - std, 'green', alpha=0.3)
 
+    plt.legend()
     plt.show()
 
     plt.hist(libbi_logreturns[18, :], bins=30)
