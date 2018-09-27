@@ -7,8 +7,6 @@ import sys
 
 
 if __name__ == '__main__':
-    std_ratio = 1.
-
     q = 0.001
     r = 0.001
 
@@ -42,8 +40,9 @@ if __name__ == '__main__':
 
     k_stds = np.sqrt(covs)
     plt.plot(filtered, color='red', label='theoretical result')
-    plt.plot(filtered + k_stds, color='red', alpha=0.3)
-    plt.plot(filtered - k_stds, color='red', alpha=0.3)
+    plt.plot(filtered + k_stds, linestyle='-.', color='red', alpha=0.2)
+    plt.plot(filtered - k_stds, linestyle='-.', color='red', alpha=0.2,
+             label='theoretical +- std')
 
     x = os.system('./filter.sh')
     if x:
@@ -54,15 +53,23 @@ if __name__ == '__main__':
 
     plt.plot(libbi_logreturns.mean(axis=1), 'green', label='libbi result')
     std = libbi_logreturns.std(axis=1)
-    plt.plot(libbi_logreturns.mean(axis=1) + std, 'green', alpha=0.3)
-    plt.plot(libbi_logreturns.mean(axis=1) - std, 'green', alpha=0.3)
+    plt.plot(libbi_logreturns.mean(axis=1) + std, linestyle='-.', color='green',
+             alpha=0.2)
+    plt.plot(libbi_logreturns.mean(axis=1) - std, linestyle='-.', color='green',
+             alpha=0.2, label='libbi +- std')
 
     plt.legend()
     plt.show()
 
-    plt.hist(libbi_logreturns[18, :], bins=30)
+    # Plot particle state distribution at some random point
+    p_index = 18
+
+    plt.hist(libbi_logreturns[p_index, :], bins=30)
+    plt.title(f'State distribution at point {p_index}')
     plt.show()
 
-    plt.plot(std)
-    plt.plot(k_stds, color='red')
+    plt.plot(std, color='green', label='libbi')
+    plt.plot(k_stds, color='red', label='theoretical')
+    plt.legend()
+    plt.title('STD of the state over time')
     plt.show()
