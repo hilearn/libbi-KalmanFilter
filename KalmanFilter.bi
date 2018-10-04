@@ -9,11 +9,6 @@ model KalmanFilter {
     r <- 0.001;
   }
 
-  sub proposal_parameter {
-    q ~ log_gaussian(q, 1);
-    r ~ log_gaussian(r, 1);
-  }
-
   sub initial {
     x ~ gaussian(0, 0.001);
   }
